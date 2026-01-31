@@ -24,42 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: List project files
-        run: |
-          echo "Project structure:"
-          Get-ChildItem -Recurse -Depth 2 | Select-Object FullName | Format-Table -HideTableHeaders
-
       - name: Build Windows executable
-        run: |
-          echo "Running pkg command..."
-          pkg . --targets node18-win-x64 --outpath build
-          if ($LASTEXITCODE -eq 0) {
-            echo "pkg command succeeded"
-          } else {
-            echo "pkg command failed with exit code $LASTEXITCODE"
-          }
+        run: pkg . --targets node18-win-x64 --outpath build
 
-      - name: Check build output
-        run: |
-          echo "Checking build directory..."
-          if (Test-Path "build") {
-            echo "Build directory exists"
-            Get-ChildItem "build"
-          } else {
-            echo "Build directory does not exist"
-            Get-ChildItem
-          }
-
-      - name: Verify executable exists
-        run: |
-          if (Test-Path "build/resource-consumer-server.exe") {
-            echo "Executable file exists!"
-            Get-Item "build/resource-consumer-server.exe"
-          } else {
-            echo "Executable file not found!"
-            Get-ChildItem -Path "." -Recurse -Filter "*.exe" -ErrorAction SilentlyContinue
-            exit 1
-          }
+      - name: List build output
+        run: dir build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
