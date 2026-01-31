@@ -32,24 +32,33 @@ jobs:
         run: npx pkg . --targets node18-win-x64 --output dist/resource-consumer-server.exe
       
       - name: Create Windows start script
+        shell: cmd
         run: |
-          @echo off > start.bat
-          echo @echo off >> start.bat
-          echo title Resource Consumer Server >> start.bat
-          echo echo Starting Resource Consumer Server... >> start.bat
-          echo echo. >> start.bat
-          echo dist\resource-consumer-server.exe >> start.bat
-          echo pause >> start.bat
+          (
+            echo @echo off
+            echo title Resource Consumer Server
+            echo echo Starting Resource Consumer Server...
+            echo echo.
+            echo dist\resource-consumer-server.exe
+            echo pause
+          ) > start.bat
       
       - name: Create Windows stop script
+        shell: cmd
         run: |
-          @echo off > stop.bat
-          echo @echo off >> stop.bat
-          echo title Stop Resource Consumer Server >> stop.bat
-          echo echo Stopping Resource Consumer Server... >> stop.bat
-          echo taskkill /F /IM resource-consumer-server.exe >> stop.bat
-          echo echo Server stopped. >> stop.bat
-          echo pause >> stop.bat
+          (
+            echo @echo off
+            echo title Stop Resource Consumer Server
+            echo echo Stopping Resource Consumer Server...
+            echo taskkill /F /IM resource-consumer-server.exe 2^>nul
+            echo if %%errorlevel%% equ 0 ^(
+            echo     echo Server stopped successfully.
+            echo ^) else ^(
+            echo     echo Server is not running or already stopped.
+            echo ^)
+            echo echo.
+            echo pause
+          ) > stop.bat
       
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
