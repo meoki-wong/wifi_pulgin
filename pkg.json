@@ -1,0 +1,12 @@
+{
+  "name": "resource-consumer-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "bin": "server.js",
+  "pkg": {
+    "scripts": "server.js",
+    "assets": [],
+    "targets": ["node18-win-x64", "node18-linux-x64", "node18-macos-x64"],
+    "outputPath": "dist"
+  }
+}
