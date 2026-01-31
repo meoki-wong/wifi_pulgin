@@ -1,0 +1,43 @@
+name: 构建Windows可执行文件
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    步骤:
+      - 名称: 检出代码
+        uses: actions/checkout@v4
+
+      - 名称: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - 名称: 安装pkg打包工具
+        run: npm install -g pkg
+
+      - 名称: 安装项目依赖
+        run: npm install
+
+      - 名称: 构建Windows可执行文件
+        run: pkg . --targets node18-win-x64 --outpath build
+        env:
+          PKG_EXECPATH: ${{ env.npm_config_prefix }}/pkg
+
+      - 名称: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: resource-consumer-server-windows
+          path: build/
+          retention-days: 7
+
+      - 名称: 显示构建结果
+        run: |
+          echo "构建成功！"
+          echo "文件列表:"
+          dir build\
