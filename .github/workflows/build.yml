@@ -52,16 +52,16 @@ jobs:
 
       - name: Verify executable exists
         run: |
-          if (Test-Path "build\resource-consumer-server.exe") {
-            echo "✓ Executable file exists!"
-            Get-Item "build\resource-consumer-server.exe"
+          if (Test-Path "build/resource-consumer-server.exe") {
+            echo "Executable file exists!"
+            Get-Item "build/resource-consumer-server.exe"
           } else {
-            echo "✗ Executable file not found!"
+            echo "Executable file not found!"
             Get-ChildItem -Path "." -Recurse -Filter "*.exe" -ErrorAction SilentlyContinue
           }
 
       - name: Upload artifact
-        if: Test-Path "build\resource-consumer-server.exe"
+        if: Test-Path "build/resource-consumer-server.exe"
         uses: actions/upload-artifact@v4
         with:
           name: resource-consumer-server-windows
