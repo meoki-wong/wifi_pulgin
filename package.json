@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Node.js server that consumes system resources at a steady rate of 3KB per second",
   "main": "server.js",
+  "bin": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
