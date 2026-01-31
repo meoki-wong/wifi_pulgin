@@ -58,10 +58,10 @@ jobs:
           } else {
             echo "Executable file not found!"
             Get-ChildItem -Path "." -Recurse -Filter "*.exe" -ErrorAction SilentlyContinue
+            exit 1
           }
 
       - name: Upload artifact
-        if: Test-Path "build/resource-consumer-server.exe"
         uses: actions/upload-artifact@v4
         with:
           name: resource-consumer-server-windows
